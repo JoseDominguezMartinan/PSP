@@ -34,6 +34,6 @@ public class Psp_exercicio2 {
         fio4.join(); 
         System.out.println("os fillos terminaron");// sout de proba para demostrar que se esperou polos fillos
     }
-    }
+    
     
 }
