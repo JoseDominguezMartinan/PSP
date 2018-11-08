@@ -16,6 +16,12 @@ public class Psp_exercicio4 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        fioImpares fio1=new fioImpares("fio1");
+        fioPares fio2=new fioPares("fio2");
+        NumerosDosTres fio3=new NumerosDosTres("fio3");
+        fio1.start();
+        fio2.start();
+        fio3.start();
     }
     
 }
