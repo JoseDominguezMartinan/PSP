@@ -25,6 +25,9 @@ public class fios extends Thread {
     
     public void run(){
     if(f==0){
+        fios fio = new fios("fio2");
+                fio.setF(1);
+                fio.start();
         for(int i=0;i<=1000;i++){
             if(i%2==0){
                 j=j+i;
@@ -32,11 +35,12 @@ public class fios extends Thread {
             }
             System.out.println("a suma dos numeros pares é: "+j);
         }
-        fios fio = new fios("fio2");
-                fio.setF(1);
-                fio.start();
+        
     }
     if(f==1){
+        fios fio=new fios("fio3");
+                fio.setF(2);
+                fio.start();
         for(int i=0;i<=1000;i++){
             if(i%2!=0){
                 j=j+i;
@@ -44,9 +48,7 @@ public class fios extends Thread {
             }
             System.out.println("a suma dos numeros impares é: "+j);
         }
-        fios fio=new fios("fio3");
-                fio.setF(2);
-                fio.start();
+        
     }
     if(f==2){
         for(int i=0;i<=1000;i++){
