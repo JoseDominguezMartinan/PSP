@@ -19,7 +19,8 @@ public class Psp_exercicio5 {
         FacerFios fio1=new FacerFios("1");
         FacerFios fio2=new FacerFios("2");
         
-      
+        
+        
         fio1.start();
        
         fio2.start();

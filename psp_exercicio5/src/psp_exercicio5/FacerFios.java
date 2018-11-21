@@ -21,15 +21,31 @@ public class FacerFios extends Thread {
         
         if(getName().equals("1")){
             try {
-            
-                join(1);
-               
+                // para o caso de join , facemolo durante o tempo determinado para que salte o segundo fio primeiro
                 
-        } catch (InterruptedException ex) {
-                System.out.println("error");
+//            try {
+//                
+//                join(1);
+//
+//                
+//        } catch (InterruptedException ex) {
+//                System.out.println("error");
+//        }
+//        }
+
+// en caso de tratamento con prioridades:
+            sleep(1); // durmimolo un milisegundo para que chegue a establecerse a prioridade do outro fio antes de que se execute o primeiro
+            } catch (InterruptedException ex) {
+                Logger.getLogger(FacerFios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        setPriority(1);
+        
         }
+        else{
+            setPriority(10);
         }
         System.out.println("Hola son o fio numero "+getName());
+        System.out.println(getPriority()); // para mostrar a prioridade e asi ver que se fai na orde que ten que ser 
     }
 
     
