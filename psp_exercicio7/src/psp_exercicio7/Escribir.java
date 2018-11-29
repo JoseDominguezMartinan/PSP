@@ -13,8 +13,8 @@ import java.util.logging.Logger;
  * @author jose
  */
 public class Escribir extends Thread {
-    String mensaxe;
-    Correo c=new Correo();
+    String mensaxe; // contido do correo electronico 
+    Correo c=new Correo(); // obxeto correo que vamos a tratar 
 
     public Escribir(Correo c, String mensaxe ) {
         this.c=c;
@@ -23,7 +23,7 @@ public class Escribir extends Thread {
     
     public void run(){
         try {
-            c.escribir(mensaxe);
+            c.escribir(mensaxe); // chamamos ao metodo correspondente pasando o mensaxe 
             System.out.println("mensaxe enviado con exito");
         } catch (InterruptedException ex) {
             Logger.getLogger(Escribir.class.getName()).log(Level.SEVERE, null, ex);

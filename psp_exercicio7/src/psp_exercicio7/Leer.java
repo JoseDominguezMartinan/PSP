@@ -20,8 +20,8 @@ public class Leer extends Thread{
     }
     public void run(){
         try {
-            String ler = c.ler();
-            System.out.println(ler);
+            String ler = c.ler(); // chamamos ao metodo ler e retornamos o mensaxe nun string 
+            System.out.println(ler);// imprimimos o mensaxe por pantalla 
         } catch (InterruptedException ex) {
             Logger.getLogger(Leer.class.getName()).log(Level.SEVERE, null, ex);
         }
