@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author oracle
+ *Exercicio 5
+ * @author Jose Dominguez Martiñan
  */
 public class FacerFios extends Thread {
 
@@ -38,11 +38,11 @@ public class FacerFios extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(FacerFios.class.getName()).log(Level.SEVERE, null, ex);
             }
-        setPriority(1);
+        setPriority(1); //marcamos a prioridade un no caso de entrar no if (no caso de ser o 1)
         
         }
         else{
-            setPriority(10);
+            setPriority(10); // marcamos a prioridade 10 no caso de que non sexa o un, sera o 2, por tanto sera o mais prioritario
         }
         System.out.println("Hola son o fio numero "+getName());
         System.out.println(getPriority()); // para mostrar a prioridade e asi ver que se fai na orde que ten que ser 
