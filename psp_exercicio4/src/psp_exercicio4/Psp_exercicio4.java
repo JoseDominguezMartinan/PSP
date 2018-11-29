@@ -6,8 +6,8 @@
 package psp_exercicio4;
 
 /**
- *
- * @author oracle
+ * Exercicio 4
+ * @author Jose Dominguez Martiñan
  */
 public class Psp_exercicio4 {
 
