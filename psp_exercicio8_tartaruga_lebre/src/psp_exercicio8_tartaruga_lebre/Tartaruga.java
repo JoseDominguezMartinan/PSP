@@ -10,12 +10,13 @@ package psp_exercicio8_tartaruga_lebre;
  * @author oracle
  */
 public class Tartaruga extends Thread {
-   private int avance;
-   private int posicion;
-    Circuito c=new Circuito();
+
+    private int avance;
+    private int posicion;
+    Circuito c = new Circuito();
 
     public Tartaruga(Circuito c) {
-        this.c=c;
+        this.c = c;
     }
 
     public int getAvance() {
@@ -41,22 +42,28 @@ public class Tartaruga extends Thread {
     public void setC(Circuito c) {
         this.c = c;
     }
-    
-    
-    public void run(){
-        while(c.isFin()==false){
-            int posicionI=posicion;
+
+    public void run() {
+
+        while (c.isFin() == false) {
             c.Avancetartaruga(this);
-            if(posicion>=70)
-                System.out.println("------a tartaruga gañou------");
-            else if(posicionI<posicion)
-            System.out.println("a tartaruga avanzou "+c.getAvance()+" posicions"+"esta na posicion "+posicion);
-            else if(posicionI>posicion)
-                System.out.println("a tartaruga retrasouse"+c.getAvance()+" posicions"+"esta na posicion "+posicion);
-            else
-                System.out.println("a tartaruga non avanzou nada");
+            if (c.isFin() == false) {
+                if (posicion >= 70) {
+                    c.setFin(true);
+                    System.out.println("------a tartaruga gañou------");
+                    break;
+                }
+                int posicionI = posicion;
+                if (posicionI < posicion) {
+                    System.out.println("a tartaruga avanzou " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
+                } else if (posicionI > posicion) {
+                    System.out.println("a tartaruga retrasouse " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
+                } else if (c.getAvance() == 0) {
+                    System.out.println("a tartaruga non avanzou nada ");
+                }
+
+            }
         }
     }
-    
-    
+
 }

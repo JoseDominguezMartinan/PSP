@@ -10,12 +10,13 @@ package psp_exercicio8_tartaruga_lebre;
  * @author oracle
  */
 public class Lebre extends Thread {
+
     int avance;
     int posicion;
-    Circuito c=new Circuito();
+    Circuito c = new Circuito();
 
     public Lebre(Circuito c) {
-        this.c=c;
+        this.c = c;
     }
 
     public int getAvance() {
@@ -41,20 +42,31 @@ public class Lebre extends Thread {
     public void setC(Circuito c) {
         this.c = c;
     }
-    
-    public void run(){
-         while(c.isFin()==false){
-            int posicionI=posicion;
+
+    public void run() {
+        while (c.isFin() == false) {
+            int posicionI = posicion;
             c.AvanceLebre(this);
-            if(posicion==70)
-                 System.out.println("--------a lebre gañou-------");
-            if(posicionI<posicion)
-            System.out.println("a lebre avanzou "+c.getAvance()+" posicions"+"esta na posicion "+posicion);
-            else if(posicionI>posicion)
-                System.out.println("a lebre retrasouse"+c.getAvance()+" posicions"+"esta na posicion "+posicion);
-            else
-                System.out.println("a lebre non avanzou nada");
-        } 
+
+            if (c.isFin() == false) {
+
+                if (posicion >= 70) {
+                    c.setFin(true);
+                    System.out.println("--------a lebre gañou-------");
+                    break;
+
+                }
+                if (posicionI < posicion) {
+                    System.out.println("a lebre avanzou " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
+                } else if (posicionI > posicion) {
+                    System.out.println("a lebre retrasouse " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
+                } else if (c.getAvance() == 0) {
+                    System.out.println("a lebre non avanzou nada");
+                }
+
+            }
+        }
+
     }
-    
+
 }

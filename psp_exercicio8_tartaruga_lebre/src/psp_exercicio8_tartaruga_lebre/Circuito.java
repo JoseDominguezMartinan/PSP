@@ -34,6 +34,11 @@ public class Circuito {
     public int getAvance() {
         return avance;
     }
+
+    public void setFin(boolean fin) {
+        this.fin = fin;
+    }
+    
     
     public synchronized void Avancetartaruga(Tartaruga t){
         while(available==false){
@@ -43,6 +48,7 @@ public class Circuito {
                 System.out.println("error");
             }
         }
+        if (fin==false){
         available=false;
         posibilidad=(int) (Math.random()*100-1);
         
@@ -67,12 +73,13 @@ public class Circuito {
               t.setPosicion(t.getPosicion()+1);
               avance=1;
             }
-        }
-        if(t.getPosicion()>=70){
             
-            fin=true;
         }
-        notify();
+        }
+       notify();
+         
+       
+    
     }
     public synchronized void AvanceLebre(Lebre l){
         while(available==true){
@@ -82,6 +89,7 @@ public class Circuito {
                 System.out.println("error");
             }
         }
+        if(fin==false){
         available=true;
         posibilidad=(int) (Math.random()*100+1);
         
@@ -116,13 +124,14 @@ public class Circuito {
                l.setPosicion(0); 
                avance=l.getPosicion();
             }
-        }
-        if(l.getPosicion()>=70){
             
-            fin=true;
         }
-        notify();
-    }
+         notify();
+        
+        }
+ 
+      
+   }
     
     
 }
