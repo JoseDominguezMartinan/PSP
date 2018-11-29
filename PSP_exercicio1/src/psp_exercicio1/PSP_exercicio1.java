@@ -16,6 +16,7 @@ public class PSP_exercicio1 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        // creamos os fios e chamamos ao metodo start para inicializalos 
         new ThreadExercicio1("fio1").start();
         new ThreadExercicio1("fio2").start();
     }
