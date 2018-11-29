@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author jose
+ *exercicio 6
+ * @author jose Dominguez Martiñan
  */
 public class Caixa {
     private int cartos=600; // variable que indica os cartos que hay na caixa
@@ -69,7 +69,7 @@ public class Caixa {
                 System.out.println("error");
             }
         }
-        if(cartos>=valor)
+        if(cartos>=valor) // comprobamos que o diñeiro que hai na caixa sexa suficiente para non quedar en numeros vermellos
             cartos=cartos-valor;
         else
             System.out.println("non se pudo retirar o diñeiro, non hai cartos suficientes");
