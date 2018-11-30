@@ -6,14 +6,15 @@
 package psp_exercicio8_tartaruga_lebre;
 
 /**
- *
- * @author oracle
+ * exemplo lebre-tartaruga
+ * clase tartaruga
+ * @author Jose Dominguez Martiñán 
  */
 public class Tartaruga extends Thread {
 
-    private int avance;
-    private int posicion;
-    Circuito c = new Circuito();
+    private int avance; // casillas que avanza a tartaruga 
+    private int posicion; // posicion na que se atopa a tartaruga 
+    Circuito c = new Circuito(); // circuito que recorre, se lle pasara no constructor para que sexa o mesmo que ten a lebre 
 
     public Tartaruga(Circuito c) {
         this.c = c;
@@ -45,20 +46,22 @@ public class Tartaruga extends Thread {
 
     public void run() {
 
-        while (c.isFin() == false) {
-            c.Avancetartaruga(this);
-            if (c.isFin() == false) {
-                if (posicion >= 70) {
+        while (c.isFin() == false) { // mentras que un non acabase a carreira , para que se repita infinitamente ata que un gañe 
+            c.Avancetartaruga(this); // chamamos ao metodo de avance da tartaruga 
+            if (c.isFin() == false) { // en caso de que alguen non acabase a carreira, e necesario porque pudo entrar
+                //neste bucle e quedar en wait , , polo tanto cando o anterior o desperte non se executara nada
+                //porque esta tratado no monitor, pero si fara as impresions por pantalla que aparecen a continuacion cos datos da anterior xogada
+                if (posicion >= 70) { // se a posicion e 70 ou mais imprimese a mensaxe de gañador 
                     c.setFin(true);
                     System.out.println("------a tartaruga gañou------");
                     break;
                 }
                 int posicionI = posicion;
-                if (posicionI < posicion) {
+                if (posicionI < posicion) { // se a posicion na que quedou e maior que na que estaba , imprimise o que avanzou 
                     System.out.println("a tartaruga avanzou " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
-                } else if (posicionI > posicion) {
+                } else if (posicionI > posicion) { // se a posicion na que quedou e menor que na que estaba imprimese o que retrocedeu
                     System.out.println("a tartaruga retrasouse " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
-                } else if (c.getAvance() == 0) {
+                } else if (c.getAvance() == 0) { // se non avanzou nada imprimesee
                     System.out.println("a tartaruga non avanzou nada ");
                 }
 
