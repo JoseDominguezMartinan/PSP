@@ -47,6 +47,7 @@ public class Tartaruga extends Thread {
     public void run() {
 
         while (c.isFin() == false) { // mentras que un non acabase a carreira , para que se repita infinitamente ata que un gañe 
+            int posicionI = posicion;
             c.Avancetartaruga(this); // chamamos ao metodo de avance da tartaruga 
             if (c.isFin() == false) { // en caso de que alguen non acabase a carreira, e necesario porque pudo entrar
                 //neste bucle e quedar en wait , , polo tanto cando o anterior o desperte non se executara nada
@@ -56,7 +57,7 @@ public class Tartaruga extends Thread {
                     System.out.println("------a tartaruga gañou------");
                     break;
                 }
-                int posicionI = posicion;
+                
                 if (posicionI < posicion) { // se a posicion na que quedou e maior que na que estaba , imprimise o que avanzou 
                     System.out.println("a tartaruga avanzou " + c.getAvance() + " posicions " + "esta na posicion " + posicion);
                 } else if (posicionI > posicion) { // se a posicion na que quedou e menor que na que estaba imprimese o que retrocedeu
