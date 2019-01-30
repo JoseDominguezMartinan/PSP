@@ -76,9 +76,14 @@ public class Conexion {
             
             DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
             simbolos.setDecimalSeparator('.');
+            try{
             DecimalFormat df = new DecimalFormat("#.##",simbolos);
-            
             resultado =df.format(Float.parseFloat( new String(mensajeCliente)));
+            }catch(NumberFormatException ex){
+             resultado=new String(mensajeCliente);
+            }
+            
+            
         
         } catch (IOException ex) {
             System.out.println("error");

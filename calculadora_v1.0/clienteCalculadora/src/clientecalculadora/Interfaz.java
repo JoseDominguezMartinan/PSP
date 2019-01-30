@@ -23,19 +23,23 @@ public class Interfaz extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
-        
-        
+
     }
-    Conexion conexion=ClienteCalculadora.conexion;
-    String operador;
-     String num1="vacio";
-     String num2="vacio";
-    String cadena="";
-    boolean reescribir=true;
-  
+    // objeto para llamar a los metodos de la clase conexion
+    Conexion conexion = ClienteCalculadora.conexion;
+    String operador; // para controlar la operacion que vamos a realizar 
+    // numeros con los que vamos a operar
+    String num1 = "vacio"; 
+    String num2 = "vacio";
+    //cadena entera compuesta de operador mas los numeros que se le enviara al servidor
+    String cadena = "";
+    // para almacenar el operador anterior y hacer las operaciones en el orden correcto 
+    String op = null;
+    // indica si al pulsar el boton de una operacion tenemos que enviar los datos, o no 
+    boolean operar = true;
+    // indica si debemos sobreescribir el numero que tenemos en pantalla
+    boolean reescribir = true;
 
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +69,7 @@ public class Interfaz extends javax.swing.JFrame {
         btnRaiz = new javax.swing.JButton();
         btnIgual = new javax.swing.JButton();
         btnMultiplicar = new javax.swing.JButton();
+        on = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -207,63 +212,75 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        on.setText("I/O");
+        on.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onMouseClicked(evt);
+            }
+        });
+        on.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(pantalla, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnMenos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn7, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn9, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnMenos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnMultiplicar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btn7, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btn8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btn9, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnMultiplicar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(Btn0, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnPunto, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDividir, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Btn0, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnPunto, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnMas, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnDividir, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnIgual, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                            .addComponent(btnRaiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(13, 13, 13)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnMas, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pantalla))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(on, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRaiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnIgual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(pantalla, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(on, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(pantalla))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -327,7 +344,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn2MouseClicked
         // TODO add your handling code here:
-        
+
         botonesNumericos("2");
     }//GEN-LAST:event_btn2MouseClicked
 
@@ -339,11 +356,13 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnMasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMasMouseClicked
         // TODO add your handling code here:
         botonesOperacions("+");
-        
+
     }//GEN-LAST:event_btnMasMouseClicked
 
     private void btnIgualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIgualMouseClicked
         // TODO add your handling code here:
+        botonIgual();
+        operar = false;
     }//GEN-LAST:event_btnIgualMouseClicked
 
     private void btn4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn4MouseClicked
@@ -361,8 +380,7 @@ public class Interfaz extends javax.swing.JFrame {
         botonesNumericos("6");
     }//GEN-LAST:event_btn6MouseClicked
 
-    
-    
+
     private void btnMenosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenosMouseClicked
         // TODO add your handling code here:
         botonesOperacions("-");
@@ -386,13 +404,14 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
         // TODO add your handling code here:
         pantalla.setText("0");
-        num1="vacio";
-        num2="vacio";
+        num1 = "vacio";
+        num2 = "vacio";
     }//GEN-LAST:event_btnClearMouseClicked
 
     private void Btn0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Btn0MouseClicked
         // TODO add your handling code here:
         botonesNumericos("0");
+        op = null;
     }//GEN-LAST:event_Btn0MouseClicked
 
     private void btnPuntoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPuntoMouseClicked
@@ -415,39 +434,98 @@ public class Interfaz extends javax.swing.JFrame {
         botonesOperacions("x");
     }//GEN-LAST:event_btnMultiplicarMouseClicked
 
-    private void botonesNumericos(String numero){
-     
-         if(("0".equals(pantalla.getText()) || reescribir==true)&&numero!="."){
-            pantalla.setText(numero);
-           reescribir=false;
-         }
-         else{
-            pantalla.setText(pantalla.getText()+numero);
-           
-         }
-    }
-    
-    private void botonesOperacions(String operacion) {
-        
-        if(num1.equals("vacio")){
-            num1=pantalla.getText();
-            reescribir=true;
-        
+    private void onActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_onActionPerformed
+/**
+ * boton para apagar y encender , en esta v1 solamente hara el dispose aunque haya ya codigo para cerrar las conexiones
+ * @param evt 
+ */
+    private void onMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMouseClicked
+        // TODO add your handling code here:
+        if(pantalla.getText()==""){
+            pantalla.setText("0");
+            try {
+                conexion.crearConexion();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else{
-            float numero=Float.parseFloat(pantalla.getText());
-            num2=String.valueOf(numero);
-            cadena=operacion+" "+num1+" "+num2;
-            System.out.println(cadena);
-            conexion.enviar(cadena);
-            String total=conexion.recibir();
-            pantalla.setText(total); 
-            reescribir=true;
-            num1=total;
-         
+            pantalla.setText("");
+            try {
+                conexion.cerrarConexions();
+            } catch (IOException ex) {
+                Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        dispose();
+        
+    }//GEN-LAST:event_onMouseClicked
+/**
+ * metodo que sera llamado cuando pulses los botones numericos
+ * @param numero 
+ */
+    private void botonesNumericos(String numero) {
+        // en caso de que la pantalla haya un cero o haya que sobreescribir y no tengas un . para poner
+        if (("0".equals(pantalla.getText()) || reescribir == true) && numero != ".") {
+            pantalla.setText(numero); // se escribe el nuevo numero
+            reescribir = false;
+        } else {
+            // se añade el numero pulsado al que ya estaba en pantallla 
+            pantalla.setText(pantalla.getText() + numero);
+
         }
     }
-    
+/**
+ * metodo que sera llamado cuando des a un boton de una de las operaciones
+ * @param operacion 
+ */
+    private void botonesOperacions(String operacion) {
+        // si la operacion es la raiz de un numero, se coge el numero y se manda ya la operacion 
+        if (operacion == "r") {
+            num1 = pantalla.getText();
+            cadena = "r" + " " + num1;
+            conexion.enviar(cadena);
+            String total = conexion.recibir();
+            pantalla.setText(total);
+            reescribir = true;
+            num1 = total;
+            operar=false;
+        } 
+        else {
+            // si el numero 1 no esta alamacenado o el booleano indica que no se opere aun , rellenamos el numero1 con el que esta en pantalla  
+            if (num1.equals("vacio") || operar == false) {
+
+                num1 = pantalla.getText();
+                reescribir = true;
+                op = operacion; //almacenamos la operacion que queremos realizar para el momento en el que se llame al metood igual se ejecute
+                operar = true; //indicamos que ya se puede operar
+            }
+            else {
+
+                botonIgual(); //enviamos la operacion
+                op = operacion;
+
+            }
+        }
+    }
+/**
+ * metodo que sera llamado cuando queramos realizar las operaciones y  mostrar el resultado por pantalla 
+ */
+    public void botonIgual() {
+        
+        num2 = String.valueOf(pantalla.getText());
+        cadena = op + " " + num1 + " " + num2;
+        System.out.println(cadena);
+        conexion.enviar(cadena);
+        String total = conexion.recibir();
+        pantalla.setText(total);
+        reescribir = true;
+        num1 = total;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -479,12 +557,11 @@ public class Interfaz extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Interfaz().setVisible(true);
-                
-        
-}
-            
+
+            }
+
         });
-       
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -507,6 +584,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnPunto;
     private javax.swing.JButton btnRaiz;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton on;
     private javax.swing.JTextField pantalla;
     // End of variables declaration//GEN-END:variables
 }
