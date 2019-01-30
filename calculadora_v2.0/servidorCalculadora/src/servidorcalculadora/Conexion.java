@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Metodos de conexion socket PSP
- * calculadora v 1.0
+ * calculadora v 2.0
  * @author Jose
  */
 public class Conexion {
