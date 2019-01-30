@@ -1,0 +1,7 @@
+Para hacer funcionar la calculadora cliente/servidor:
+-lanzar servidor
+-lanzar cliente
+-las operaciones pueden ser concatenadas, es decir, no tienes que dar al boton igual cada vez que realices una operacion
+- el boton c pondra la calculadora en el estado inicial
+- se puede operar con decimales, para ello hay un boton ,
+-el boton I/O hara un dispose de la calculadora, es decir, la ventana se cerrará
