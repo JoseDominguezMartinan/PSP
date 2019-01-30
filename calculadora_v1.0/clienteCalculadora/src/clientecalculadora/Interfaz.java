@@ -5,6 +5,10 @@
  */
 package clientecalculadora;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Jose
@@ -16,8 +20,22 @@ public class Interfaz extends javax.swing.JFrame {
      */
     public Interfaz() {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+        
+        
     }
+    Conexion conexion=ClienteCalculadora.conexion;
+    String operador;
+     String num1="vacio";
+     String num2="vacio";
+    String cadena="";
+    boolean reescribir=true;
+  
 
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,13 +64,14 @@ public class Interfaz extends javax.swing.JFrame {
         btnDividir = new javax.swing.JButton();
         btnRaiz = new javax.swing.JButton();
         btnIgual = new javax.swing.JButton();
+        btnMultiplicar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pantalla.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         pantalla.setText("0");
         pantalla.setToolTipText("");
-        pantalla.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        pantalla.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         pantalla.setFocusable(false);
         pantalla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,6 +179,11 @@ public class Interfaz extends javax.swing.JFrame {
         });
 
         btnDividir.setText("/");
+        btnDividir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDividirMouseClicked(evt);
+            }
+        });
 
         btnRaiz.setText("√");
         btnRaiz.setToolTipText("");
@@ -176,6 +200,13 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        btnMultiplicar.setText("x");
+        btnMultiplicar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnMultiplicarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -185,7 +216,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(pantalla, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -205,13 +236,13 @@ public class Interfaz extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btn9, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDividir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(btnMultiplicar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(Btn0, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnPunto, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnRaiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(btnDividir, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -220,8 +251,11 @@ public class Interfaz extends javax.swing.JFrame {
                                 .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnMas, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnIgual, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnIgual, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                            .addComponent(btnRaiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(13, 13, 13)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -242,20 +276,23 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(btn4)
                             .addComponent(btn5)
                             .addComponent(btn6)
-                            .addComponent(btnMenos))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btnMenos)))
+                    .addComponent(btnRaiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btn7)
                             .addComponent(btn8)
                             .addComponent(btn9)
-                            .addComponent(btnDividir))
+                            .addComponent(btnMultiplicar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(Btn0)
                                 .addComponent(btnPunto)
-                                .addComponent(btnRaiz))))
+                                .addComponent(btnDividir))
+                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(btnIgual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -285,18 +322,24 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn1MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("1");
     }//GEN-LAST:event_btn1MouseClicked
 
     private void btn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn2MouseClicked
         // TODO add your handling code here:
+        
+        botonesNumericos("2");
     }//GEN-LAST:event_btn2MouseClicked
 
     private void btn3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn3MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("3");
     }//GEN-LAST:event_btn3MouseClicked
 
     private void btnMasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMasMouseClicked
         // TODO add your handling code here:
+        botonesOperacions("+");
+        
     }//GEN-LAST:event_btnMasMouseClicked
 
     private void btnIgualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIgualMouseClicked
@@ -305,48 +348,106 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btn4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn4MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("4");
     }//GEN-LAST:event_btn4MouseClicked
 
     private void btn5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn5MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("5");
     }//GEN-LAST:event_btn5MouseClicked
 
     private void btn6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn6MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("6");
     }//GEN-LAST:event_btn6MouseClicked
 
+    
+    
     private void btnMenosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenosMouseClicked
         // TODO add your handling code here:
+        botonesOperacions("-");
     }//GEN-LAST:event_btnMenosMouseClicked
 
     private void btn7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn7MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("7");
     }//GEN-LAST:event_btn7MouseClicked
 
     private void btn8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn8MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("8");
     }//GEN-LAST:event_btn8MouseClicked
 
     private void btn9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn9MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("9");
     }//GEN-LAST:event_btn9MouseClicked
 
     private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
         // TODO add your handling code here:
+        pantalla.setText("0");
+        num1="vacio";
+        num2="vacio";
     }//GEN-LAST:event_btnClearMouseClicked
 
     private void Btn0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Btn0MouseClicked
         // TODO add your handling code here:
+        botonesNumericos("0");
     }//GEN-LAST:event_Btn0MouseClicked
 
     private void btnPuntoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPuntoMouseClicked
         // TODO add your handling code here:
+        botonesNumericos(".");
     }//GEN-LAST:event_btnPuntoMouseClicked
 
     private void btnRaizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRaizMouseClicked
         // TODO add your handling code here:
+        botonesOperacions("r");
     }//GEN-LAST:event_btnRaizMouseClicked
 
+    private void btnDividirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDividirMouseClicked
+        // TODO add your handling code here:
+        botonesOperacions("/");
+    }//GEN-LAST:event_btnDividirMouseClicked
+
+    private void btnMultiplicarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMultiplicarMouseClicked
+        // TODO add your handling code here:
+        botonesOperacions("x");
+    }//GEN-LAST:event_btnMultiplicarMouseClicked
+
+    private void botonesNumericos(String numero){
+     
+         if(("0".equals(pantalla.getText()) || reescribir==true)&&numero!="."){
+            pantalla.setText(numero);
+           reescribir=false;
+         }
+         else{
+            pantalla.setText(pantalla.getText()+numero);
+           
+         }
+    }
+    
+    private void botonesOperacions(String operacion) {
+        
+        if(num1.equals("vacio")){
+            num1=pantalla.getText();
+            reescribir=true;
+        
+        }
+        else{
+            float numero=Float.parseFloat(pantalla.getText());
+            num2=String.valueOf(numero);
+            cadena=operacion+" "+num1+" "+num2;
+            System.out.println(cadena);
+            conexion.enviar(cadena);
+            String total=conexion.recibir();
+            pantalla.setText(total); 
+            reescribir=true;
+            num1=total;
+         
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -378,8 +479,12 @@ public class Interfaz extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Interfaz().setVisible(true);
-            }
+                
+        
+}
+            
         });
+       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -398,6 +503,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnIgual;
     private javax.swing.JButton btnMas;
     private javax.swing.JButton btnMenos;
+    private javax.swing.JButton btnMultiplicar;
     private javax.swing.JButton btnPunto;
     private javax.swing.JButton btnRaiz;
     private javax.swing.JPanel jPanel1;

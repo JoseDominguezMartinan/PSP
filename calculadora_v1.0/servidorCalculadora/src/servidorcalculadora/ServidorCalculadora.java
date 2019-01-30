@@ -20,8 +20,9 @@ public class ServidorCalculadora {
         // TODO code application logic here
         Conexion conexion=new Conexion();
         conexion.crearConexion();
+        while(true)
         conexion.recibir();
-        conexion.enviar();
+        
     }
     
 }

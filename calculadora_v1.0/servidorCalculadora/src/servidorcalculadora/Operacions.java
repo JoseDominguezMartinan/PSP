@@ -32,18 +32,22 @@ public class Operacions {
      * @return devolver mensaxe que se mostrara por pantalla 
      */
     public static String sumaRestaMul(String num1, String num2,String operador){
-        numero1=Float.parseFloat(num1);
-        numero2=Float.parseFloat(num2);
+        numero1=Float.valueOf(num1);
+        numero2=Float.valueOf(num2);
+        
         switch(operador){
             case "+":
                resultado=numero1+numero2;
-               devolver=String.valueOf(resultado);
+               devolver=Float.toString(resultado);
+               break;
             case "-" :
                resultado=numero1-numero2;
-               devolver=String.valueOf(resultado);
+               devolver=Float.toString(resultado);
+               break;
             case "x":
                 resultado=numero1*numero2;
-                devolver=String.valueOf(resultado);
+                devolver=Float.toString(resultado);
+                break;
             default:
                 devolver="operacion non valida";
                 

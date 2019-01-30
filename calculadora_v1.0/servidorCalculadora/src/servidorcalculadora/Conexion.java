@@ -55,11 +55,13 @@ public class Conexion {
     
     public void recibir() throws IOException{
         //creamos un array de bytes para almacenar la información recibida
-        byte[] mensajeCliente=new byte[20];
+        byte[] mensajeCliente=new byte[100];
         is.read(mensajeCliente);
         String datos = new String(mensajeCliente);
+        System.out.println(datos);
         //separamos los datos por el separador definido 
         String[] cadena = datos.split(" ");
+      
         //el primer campo de la cadena tiene que ser el operador, segun el cual y siempre cuando el array tenga todos los numeros necesarios y no mas, se realizara la operación determinada
        switch (cadena[0]){
            case "/":
@@ -67,27 +69,25 @@ public class Conexion {
                 resultado=Operacions.dividir(cadena[1],cadena[2]);
             else
                 resultado="error:operacion valida para dos numeros";
-            
+            break;
            case "r":
                if(cadena.length==2)
                 resultado=Operacions.raiz(cadena[1]);
                else
                 resultado="error:operacion valida para un unico numero";
-            
+            break;
            default:
                if(cadena.length==3)
                 resultado=Operacions.sumaRestaMul(cadena[1], cadena[2], cadena[0]);
+               
                else
                 resultado="error:operación valida para dos numeros";
+            
+               break;
        }
+       os.write(resultado.getBytes());
     }
-    /**
-     * metodo para enviar os resultados ao cliente 
-     * @throws IOException 
-     */
-    public void enviar() throws IOException{
-        os.write(resultado.getBytes());
-    }
+    
     /**
      * metodo para cerrar os sockets existentes
      * @throws IOException 
