@@ -1,0 +1,9 @@
+manual calculadora 2.0
+-para conectar con el servidor indicar puerto e ip en la interfaz grafica
+-el puerto tiene que coincidir con el introducido en el servidor para lanzarlo
+-el servidor pedira siempre un puerto para conectar clientes hasta su cierre
+-para conectarse pulsar al boton que esta debajo del campo de texto del puerto
+-para cerrar el cliente, darle al boton de conectarse con los campos ip y puerto en blanco, en caso de tener algo escrito dara error
+-antes de cerrar el cliente se nos lanzara un aviso por si le hemos dado por error
+-el cierre de un cliente no supone el cierre de los demas
+-los calculos en la calculadora se haran de la misma forma que en la v1 ( ver manual v1)
