@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
 /**
  * Metodos de conexion socket PSP
@@ -31,21 +32,23 @@ public class Conexion {
      * @throws IOException 
      */
     public void crearConexion() throws IOException{
+        while(true){
         System.out.println("Creando socket servidor");
 
         serverSocket = new ServerSocket();
 
         System.out.println("Realizando el bind");
-
-        InetSocketAddress addr = new InetSocketAddress("localhost", 6666);
+        
+        String puerto=JOptionPane.showInputDialog("Inserte el puerto servidor");
+        InetSocketAddress addr = new InetSocketAddress("localhost",Integer.parseInt(puerto));
         serverSocket.bind(addr);
         
         System.out.println("Aceptando conexiones");
 
         newSocket = serverSocket.accept();
+        new Cliente(newSocket).start();
+        }
         
-        is = newSocket.getInputStream();
-        os = newSocket.getOutputStream();
     }
     
     /**
@@ -53,7 +56,7 @@ public class Conexion {
      * @throws IOException 
      */
     
-    public void recibir() throws IOException{
+    public void recibir(InputStream is,OutputStream os) throws IOException{
         //creamos un array de bytes para almacenar la información recibida
         byte[] mensajeCliente=new byte[100];
         is.read(mensajeCliente);

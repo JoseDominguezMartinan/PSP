@@ -23,11 +23,8 @@ public class ClienteCalculadora {
         // TODO code application logic here
         Interfaz interfaz=new Interfaz();
         
-         try {
-            conexion.crearConexion();
-        } catch (IOException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-    }
+       
+    
     }   
     
     

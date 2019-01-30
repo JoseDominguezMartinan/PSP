@@ -28,11 +28,11 @@ public class Conexion {
     Socket clienteSocket;
 
     /**
-     * metodo para crear o socket e aceptar a conexion do socket cliente
+     * metodo para conectar co servidor, enviandolle porto e ip correspondente
      *
      * @throws IOException
      */
-    public void crearConexion() throws IOException {
+    public void crearConexion(String ip,int puerto) throws IOException {
         // creamos el socket cliente y establecemos la conexion , marcando el host, en este caso localhost, y el puerto por el que nos vamos a comuniccar
 
         System.out.println("Creando socket cliente");
@@ -41,7 +41,7 @@ public class Conexion {
 
         System.out.println("Estableciendo la conexi�n");
 
-        InetSocketAddress addr = new InetSocketAddress("localhost", 6666);
+        InetSocketAddress addr = new InetSocketAddress(ip, puerto);
         clienteSocket.connect(addr);
 
         
