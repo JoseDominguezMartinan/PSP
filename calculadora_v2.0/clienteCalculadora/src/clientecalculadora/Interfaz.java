@@ -492,6 +492,11 @@ public class Interfaz extends javax.swing.JFrame {
         else{
           int dialogResult = JOptionPane.showConfirmDialog (null, "¿Quieres cerrar la calculadora?");
             if(dialogResult == JOptionPane.YES_OPTION){
+              try {
+                  conexion.cerrarConexions();
+              } catch (IOException ex) {
+                  Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+              }
                 dispose();
 }
             
