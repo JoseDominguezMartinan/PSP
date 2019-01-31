@@ -42,13 +42,14 @@ public class Conexion {
         String puerto=JOptionPane.showInputDialog("Inserte el puerto servidor");
         InetSocketAddress addr = new InetSocketAddress("localhost",Integer.parseInt(puerto));
         serverSocket.bind(addr);
+        do{
          socket = serverSocket.accept();
         System.out.println("Aceptando conexiones");
 
         
       
-        new Cliente(socket,is,os).start();
-        
+        new Hilos(socket,is,os).start();
+        }while(true);
         
     }
     
