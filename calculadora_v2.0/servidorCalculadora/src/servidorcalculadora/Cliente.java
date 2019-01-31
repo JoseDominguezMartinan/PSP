@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,25 +20,34 @@ import java.util.logging.Logger;
  */
 public class Cliente extends Thread {
     private Socket socket;
+    
     private InputStream is;
     private OutputStream os;
     Conexion conexion=new Conexion();
+    private ServerSocket serversocket;
     
-    public Cliente(Socket socket) throws IOException {
-        this.socket=socket;
-        is = socket.getInputStream();
-        os = socket.getOutputStream();
+    public Cliente( ServerSocket serversocket) throws IOException {
+        this.serversocket=serversocket;
+        
     }
     
     
     @Override
     public void run() {
+        
         try {
-            
-            while(true)
-            conexion.recibir(is,os);
-        } catch (IOException ex) {
+            socket = serversocket.accept();
+            is = socket.getInputStream();
+            os = socket.getOutputStream();
+                try {
+                    while(true){
+                    conexion.recibir(is,os);
+                }} catch (IOException ex) {
+                    Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         }catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 }

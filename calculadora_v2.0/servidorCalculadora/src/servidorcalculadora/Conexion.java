@@ -24,7 +24,6 @@ public class Conexion {
     InputStream is;
     OutputStream os;
     ServerSocket serverSocket;
-    Socket newSocket;
     String resultado;
     
     /**
@@ -32,7 +31,7 @@ public class Conexion {
      * @throws IOException 
      */
     public void crearConexion() throws IOException{
-        while(true){
+       
         System.out.println("Creando socket servidor");
 
         serverSocket = new ServerSocket();
@@ -45,8 +44,9 @@ public class Conexion {
         
         System.out.println("Aceptando conexiones");
 
-        newSocket = serverSocket.accept();
-        new Cliente(newSocket).start();
+        
+        while(true){
+        new Cliente(serverSocket).start();
         }
         
     }
@@ -97,7 +97,7 @@ public class Conexion {
      */
     public void cerrarConexions() throws IOException{
         serverSocket.close();
-        newSocket.close();
+        
     }
     
 }

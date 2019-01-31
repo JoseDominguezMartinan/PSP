@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *calculadora v2.0
  * @author Jose
  */
 public class Conexion {
@@ -74,13 +74,15 @@ public class Conexion {
             is = clienteSocket.getInputStream();
             is.read(mensajeCliente);
             
-            DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-            simbolos.setDecimalSeparator('.');
+            
+            // para formatear el resultado a nuestro gusto
+            DecimalFormatSymbols simbolos = new DecimalFormatSymbols(); // simbolo que separa la parte entera de los decimales
+            simbolos.setDecimalSeparator('.'); // el simbolo sera el punto
             try{
-            DecimalFormat df = new DecimalFormat("#.##",simbolos);
-            resultado =df.format(Float.parseFloat( new String(mensajeCliente)));
+            DecimalFormat df = new DecimalFormat("#.##",simbolos); //lo formatearemos hasta dos decimales
+            resultado =df.format(Float.parseFloat( new String(mensajeCliente))); //formateamos el resultado
             }catch(NumberFormatException ex){
-             resultado=new String(mensajeCliente);
+             resultado=new String(mensajeCliente); // creamos un string a partir del resultado para devolverlo 
             }
             
             
