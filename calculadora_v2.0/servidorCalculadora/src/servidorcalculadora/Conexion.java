@@ -25,6 +25,7 @@ public class Conexion {
     OutputStream os;
     ServerSocket serverSocket;
     String resultado;
+    Socket socket;
     
     /**
      * metodo para crear o socket e aceptar a conexion do socket cliente 
@@ -41,13 +42,13 @@ public class Conexion {
         String puerto=JOptionPane.showInputDialog("Inserte el puerto servidor");
         InetSocketAddress addr = new InetSocketAddress("localhost",Integer.parseInt(puerto));
         serverSocket.bind(addr);
-        
+         socket = serverSocket.accept();
         System.out.println("Aceptando conexiones");
 
         
-        while(true){
-        new Cliente(serverSocket).start();
-        }
+      
+        new Cliente(socket,is,os).start();
+        
         
     }
     

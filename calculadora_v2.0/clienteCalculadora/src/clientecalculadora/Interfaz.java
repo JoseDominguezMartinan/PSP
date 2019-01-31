@@ -24,6 +24,23 @@ public class Interfaz extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+        Btn0.setFocusable(false);
+        btn1.setFocusable(false);
+        btn2.setFocusable(false);
+        btn3.setFocusable(false);
+        btn4.setFocusable(false);
+        btn5.setFocusable(false);
+        btn6.setFocusable(false);
+        btn7.setFocusable(false);
+        btn8.setFocusable(false);
+        btn9.setFocusable(false);
+        btnMas.setFocusable(false);
+        btnMenos.setFocusable(false);
+        //btn.setFocusable(false);
+       // btn0.setFocusable(false);
+       // btn0.setFocusable(false);
+      //  btn0.setFocusable(false);
+        
 
     }
     // objeto para llamar a los metodos de la clase conexion
@@ -377,6 +394,7 @@ public class Interfaz extends javax.swing.JFrame {
     private void btn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn1MouseClicked
         // TODO add your handling code here:
         botonesNumericos("1");
+        
     }//GEN-LAST:event_btn1MouseClicked
 
     private void btn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn2MouseClicked
@@ -510,12 +528,13 @@ public class Interfaz extends javax.swing.JFrame {
  */
     private void botonesNumericos(String numero) {
         // en caso de que la pantalla haya un cero o haya que sobreescribir y no tengas un . para poner
-        if (("0".equals(pantalla.getText()) || reescribir == true) && numero != ".") {
+        if ("0".equals(pantalla.getText()) || reescribir == true) {
             pantalla.setText(numero); // se escribe el nuevo numero
             reescribir = false;
         } else {
             // se añade el numero pulsado al que ya estaba en pantallla 
             pantalla.setText(pantalla.getText() + numero);
+            reescribir=false;
 
         }
     }
@@ -525,45 +544,47 @@ public class Interfaz extends javax.swing.JFrame {
  */
     private void botonesOperacions(String operacion) {
         // si la operacion es la raiz de un numero, se coge el numero y se manda ya la operacion 
-        if (operacion == "r") {
+        if (operacion == "r") { 
+            reescribir = true;
             num1 = pantalla.getText();
             cadena = "r" + " " + num1;
             conexion.enviar(cadena);
             String total = conexion.recibir();
             pantalla.setText(total);
-            reescribir = true;
+           
             num1 = total;
             operar=false;
         } 
-        else {
+        
             // si el numero 1 no esta alamacenado o el booleano indica que no se opere aun , rellenamos el numero1 con el que esta en pantalla  
             if (num1.equals("vacio") || operar == false) {
-
-                num1 = pantalla.getText();
                 reescribir = true;
+                num1 = pantalla.getText();
+                
                 op = operacion; //almacenamos la operacion que queremos realizar para el momento en el que se llame al metood igual se ejecute
                 operar = true; //indicamos que ya se puede operar
             }
             else {
-
+                reescribir=true;
                 botonIgual(); //enviamos la operacion
                 op = operacion;
-
+                
+                operar=false;
             }
-        }
+        
     }
 /**
  * metodo que sera llamado cuando queramos realizar las operaciones y  mostrar el resultado por pantalla 
  */
     public void botonIgual() {
-        
+        reescribir = true;
         num2 = String.valueOf(pantalla.getText());
         cadena = op + " " + num1 + " " + num2;
         System.out.println(cadena);
         conexion.enviar(cadena);
         String total = conexion.recibir();
         pantalla.setText(total);
-        reescribir = true;
+        
         num1 = total;
     }
 
