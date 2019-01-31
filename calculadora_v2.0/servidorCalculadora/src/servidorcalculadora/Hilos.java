@@ -34,19 +34,21 @@ public class Hilos extends Thread {
 
     @Override
     public void run() {
-
+        
         try {
             //asignamos un socket nuevo para dejar libre al serversocket que tiene que seguir recibiendo respuestas
            
             is = nsocket.getInputStream();
             os = nsocket.getOutputStream();
-            
+         do{   
 
                 conexion.recibir(is, os);
+         }while(true);
             
         } catch (IOException ex) {
             Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
     }
 }
