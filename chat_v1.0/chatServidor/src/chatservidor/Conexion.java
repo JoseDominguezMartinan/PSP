@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,7 +28,7 @@ public class Conexion {
     ServerSocket serverSocket;
     String datos = "";
     String resultado = "";
-     String comprobacion="";
+     String comprobacion="@";
    
     Socket socket;
    
@@ -68,18 +70,18 @@ public class Conexion {
        
         do{
             if(is.available()==0){
-                if(comprobacion.equalsIgnoreCase("[]")){
+               if(!resultado.equalsIgnoreCase(comprobacion))
                     enviar(os);
-                }
+                comprobacion=resultado;
             }
             else{
-                if(comprobacion.equalsIgnoreCase("[]")){
+               
             byte[] mensajeCliente = new byte[1024];
             is.read(mensajeCliente);
             datos = new String(mensajeCliente);
             resultado = datos;
-            comprobacion=resultado;
-            }
+            
+            
             }
         }while(true);
     
@@ -101,5 +103,39 @@ public class Conexion {
         serverSocket.close();
 
     }
+    public class Hilos extends Thread {
+
+
+    private InputStream is;
+    private OutputStream os;
+    private Socket nsocket;
+    
+
+    public Hilos(Socket socket,InputStream ins,OutputStream ons) throws IOException {
+        this.nsocket=socket;
+        this.is=ins;
+        this.os=ons;
+        
+    }
+
+    @Override
+    public void run() {
+        
+        try {
+            //asignamos un socket nuevo para dejar libre al serversocket que tiene que seguir recibiendo respuestas
+           
+            is = nsocket.getInputStream();
+            os = nsocket.getOutputStream();
+          
+             recibir(is,os);
+         
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }
+}
 
 }

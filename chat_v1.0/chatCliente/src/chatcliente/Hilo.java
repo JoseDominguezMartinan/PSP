@@ -6,9 +6,10 @@
 package chatcliente;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -17,8 +18,7 @@ import java.util.logging.Logger;
 public class Hilo extends Thread {
 
     Conexion conexion;
-    
-    
+
     public Hilo(Conexion conexion) {
 
         this.conexion = conexion;
@@ -28,17 +28,29 @@ public class Hilo extends Thread {
     @Override
 
     public void run() {
-        boolean i=true;
-        while (i==true) {
+        boolean i = true;
+        while (i == true) {
 
             try {
-                InterfazSala.chatSala.setText(InterfazSala.chatSala.getText() + conexion.recibir());
+                String[] datos = conexion.recibir();
+                try {
+                    if (datos[0].equalsIgnoreCase(conexion.nick)) {
+                        conexion.alineacion(StyleConstants.ALIGN_RIGHT);
+                        InterfazSala.chatSala.setText(InterfazSala.chatSala.getText() + datos[0] + "\n" + datos[1]);
+                    } else {
+                        conexion.alineacion(StyleConstants.ALIGN_LEFT);
+                        InterfazSala.chatSala.setText(InterfazSala.chatSala.getText() + datos[0] + "\n" + datos[1]);
+                    }
+                } catch (ArrayIndexOutOfBoundsException error) {
+                    System.out.println("esperando a recibir mensaje");
+                }
+
             } catch (IOException ex) {
-               i=false;
-                
+                i = false;
+
             }
 
         }
     }
 
-    }
+}
