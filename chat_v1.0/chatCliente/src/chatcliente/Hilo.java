@@ -32,18 +32,9 @@ public class Hilo extends Thread {
         while (i == true) {
 
             try {
-                String[] datos = conexion.recibir();
-                try {
-                    if (datos[0].equalsIgnoreCase(conexion.nick)) {
-                        conexion.alineacion(StyleConstants.ALIGN_RIGHT);
-                        InterfazSala.chatSala.setText(InterfazSala.chatSala.getText() + datos[0] + "\n" + datos[1]);
-                    } else {
-                        conexion.alineacion(StyleConstants.ALIGN_LEFT);
-                        InterfazSala.chatSala.setText(InterfazSala.chatSala.getText() + datos[0] + "\n" + datos[1]);
-                    }
-                } catch (ArrayIndexOutOfBoundsException error) {
-                    System.out.println("esperando a recibir mensaje");
-                }
+                
+                conexion.recibir();
+              
 
             } catch (IOException ex) {
                 i = false;

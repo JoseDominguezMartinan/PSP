@@ -28,10 +28,10 @@ public class Conexion {
     ServerSocket serverSocket;
     String datos = "";
     String resultado = "";
-     String comprobacion="@";
-   
+    String comprobacion = "@";
+    int conexiones = 0; // para controlar el numero de clientes con sesion iniciada en el servidor
+    boolean contains;
     Socket socket;
-   
 
     /**
      * metodo para crear o socket e aceptar a conexion do socket cliente
@@ -50,13 +50,25 @@ public class Conexion {
         InetSocketAddress addr = new InetSocketAddress("localhost", Integer.parseInt(puerto));
         serverSocket.bind(addr);
 
-        for (int i = 0; i < 10; i++) {
-            socket = serverSocket.accept();
-            System.out.println("Aceptando conexiones");
-            i++;
+        do { 
+            if (conexiones < 3) {
+               
+                socket = serverSocket.accept();
+                System.out.println("Aceptando conexiones");
 
-            new Hilos(socket, is, os).start();
-        }
+                new Hilos(socket, is, os).start();
+                conexiones++;
+            }else {
+                try {
+                    Thread.sleep(200); // el sleep es necesario para que funcionen las conexiones y desconexiones con el numero maximo 
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }
+            
+
+        } while (true);
+
     }
 
     /**
@@ -65,33 +77,40 @@ public class Conexion {
      *
      * @throws IOException
      */
-
-    public void recibir(InputStream is,OutputStream os) throws IOException {
-       
-        do{
-            if(is.available()==0){
-               if(!resultado.equalsIgnoreCase(comprobacion))
+    public void recibir(InputStream is, OutputStream os) throws IOException {
+        
+        
+        do {
+            if (is.available() == 0) {
+                if (!resultado.equalsIgnoreCase(comprobacion)) {
                     enviar(os);
-                comprobacion=resultado;
+                }
+                comprobacion = resultado;
+                
+            } else {
+
+                byte[] mensajeCliente = new byte[1024];
+                is.read(mensajeCliente);
+                datos = new String(mensajeCliente);
+                resultado = datos;
+                contains = resultado.contains("se ha desconectado");
+                if (contains == true) {
+                    conexiones--; // si un cliente se ha desconectado se elimina una conexion de nuestra variable 
+                    System.out.println(conexiones);
+                }
+
             }
-            else{
-               
-            byte[] mensajeCliente = new byte[1024];
-            is.read(mensajeCliente);
-            datos = new String(mensajeCliente);
-            resultado = datos;
-            
-            
-            }
-        }while(true);
-    
+
+        } while (true);
+       
+
     }
 
     public void enviar(OutputStream os) throws IOException {
-        System.out.println();
+
         os.write(resultado.getBytes());
         System.out.println(resultado);
-        comprobacion="[]";
+        comprobacion = "[]";
     }
 
     /**
@@ -103,39 +122,36 @@ public class Conexion {
         serverSocket.close();
 
     }
+
     public class Hilos extends Thread {
 
+        private InputStream is;
+        private OutputStream os;
+        private Socket nsocket;
 
-    private InputStream is;
-    private OutputStream os;
-    private Socket nsocket;
-    
+        public Hilos(Socket socket, InputStream ins, OutputStream ons) throws IOException {
+            this.nsocket = socket;
+            this.is = ins;
+            this.os = ons;
 
-    public Hilos(Socket socket,InputStream ins,OutputStream ons) throws IOException {
-        this.nsocket=socket;
-        this.is=ins;
-        this.os=ons;
-        
-    }
-
-    @Override
-    public void run() {
-        
-        try {
-            //asignamos un socket nuevo para dejar libre al serversocket que tiene que seguir recibiendo respuestas
-           
-            is = nsocket.getInputStream();
-            os = nsocket.getOutputStream();
-          
-             recibir(is,os);
-         
-            
-        } catch (IOException ex) {
-            Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
 
+        @Override
+        public void run() {
+
+            try {
+                //asignamos un socket nuevo para dejar libre al serversocket que tiene que seguir recibiendo respuestas
+
+                is = nsocket.getInputStream();
+                os = nsocket.getOutputStream();
+
+                recibir(is, os);
+
+            } catch (IOException ex) {
+                Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
-}
 
 }
