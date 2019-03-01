@@ -31,11 +31,13 @@ public class Conexion {
     OutputStream os;
     Socket clienteSocket;
     String nick;
-    Calendar calendario = new GregorianCalendar(); // para sacar la hora a la que se envio el mensaje por pantalla 
+    String texto; // onde almacenaremos as mensaxes que seran xeradas para meter no chat 
+    Calendar calendario; // para sacar la hora a la que se envio el mensaje por pantalla 
     int hora, minutos, segundos;
     boolean primerMensaje = false; // si es el primer mensaje lo querremos formatear de una forma distinta 
+    boolean mensajeConectados=false; // para enviar el mensaje con el numero de usuario conectados a los demas correctamente 
     String historial = ""; // variable donde estara almacenada,en html , el historial de la conversacion
-
+    String compTexto="";
     /**
      * metodo para conectar co servidor, enviandolle porto e ip correspondente,
      * e almacenando o nick
@@ -51,7 +53,7 @@ public class Conexion {
 
         clienteSocket = new Socket();
 
-        System.out.println("Estableciendo la conexi�n");
+        System.out.println("Estableciendo la conexin");
 
         InetSocketAddress addr = new InetSocketAddress(ip, puerto);
       
@@ -59,7 +61,7 @@ public class Conexion {
       
         
 
-        enviar(nick + " ha iniciado sesión");
+        enviar(nick + " ha iniciado sesion"+" "+clienteSocket.getInetAddress()+" "+clienteSocket.getLocalPort());
     }
 
     /**
@@ -72,26 +74,38 @@ public class Conexion {
 
             os = clienteSocket.getOutputStream();
             // Recogemos la hora con los minutos a la que el mensaje fue enviado
-
+            calendario = new GregorianCalendar();
             hora = calendario.get(Calendar.HOUR_OF_DAY);
             minutos = calendario.get(Calendar.MINUTE);
             segundos = calendario.get(Calendar.SECOND);
+            
+            if(mensajeConectados==true){
+               cadena="mensaje"+"#"+"false"+"#"+cadena;
+               mensajeConectados=false;
+                System.out.println("asd");
+            }
+            else{
+            
             if (primerMensaje == false) {
                 cadena = nick + "#" + "false" + "#" + hora + ":" + minutos + ":" + segundos + ":  " + cadena + " " + "\n";
                 primerMensaje = true;
             } else {
                 cadena = nick + "#" + "true" + "#" + hora + ":" + minutos+":" + segundos + ":  " + cadena + " " + "\n";
             }
+            }
             os.write(cadena.getBytes());
+            System.out.println("enviado"+cadena);
+            
         } catch (IOException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
     }
 
     public void recibir() throws IOException {
         //creamos un array de bytes para almacenar la información recibida
-        byte[] mensajeCliente = new byte[100];
+        byte[] mensajeCliente = new byte[2048];
         is = clienteSocket.getInputStream();
         is.read(mensajeCliente);
         String datos = new String(mensajeCliente);
@@ -99,12 +113,25 @@ public class Conexion {
         String[] cadena = datos.split("#");
 
         try {
-            System.out.println(cadena[0]);
-            System.out.println(nick);
+            
+            if(cadena[0].equalsIgnoreCase("") && !compTexto.equalsIgnoreCase(datos)){
+                String res=cadena[1]+" "+cadena[2];
+                mensajeConectados=true;
+                enviar(res);
+                compTexto=datos; 
+           }
+            else{
             if (cadena[1].equalsIgnoreCase("false")) {
-                String texto =  "<div align=center style=”padding:12px;margin-left:125px;margin-right:125px;background-color:#E0B86B;line-height:1.4;”>\n" 
+                if (cadena[0].equalsIgnoreCase(nick)) {
+                    texto =  "<div align=center style=”padding:12px;margin-left:125px;margin-right:125px;background-color:#E0B86B;line-height:1.4;”>\n" 
+                   + "Conectado a sala de chat" +
+                    "</div><br>"; 
+                }
+                else{
+                 texto =  "<div align=center style=”padding:12px;margin-left:125px;margin-right:125px;background-color:#E0B86B;line-height:1.4;”>\n" 
                    + cadena[2] +
                     "</div><br>";
+                }
                 historial += texto;
                 InterfazSala.chatSala.setText(historial);
             } else {
@@ -123,8 +150,9 @@ public class Conexion {
                     InterfazSala.chatSala.setText(historial);
                 }
             }
+            }
         } catch (ArrayIndexOutOfBoundsException error) {
-            System.out.println("esperando a recibir mensaje");
+                System.out.println("esperando a recibir mensaje");
         }
 
     }

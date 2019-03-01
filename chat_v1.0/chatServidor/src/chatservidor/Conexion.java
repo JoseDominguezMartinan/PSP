@@ -25,13 +25,19 @@ public class Conexion {
     // declaramos las variables que necesitaremos en todos los metodos 
     InputStream is;
     OutputStream os;
+
     ServerSocket serverSocket;
+    Socket socket;
+
     String datos = "";
     String resultado = "";
     String comprobacion = "@";
+    String resultado2 = "";
+
     int conexiones = 0; // para controlar el numero de clientes con sesion iniciada en el servidor
-    boolean contains;
-    Socket socket;
+
+    boolean containsDesconectado; // variable que usaremos a la hora de comprobar si un cliente se ha desconectado
+    boolean containsConectado = false; // variable que usaremos a la hora de comprobar si un cliente se ha conectado 
 
     /**
      * metodo para crear o socket e aceptar a conexion do socket cliente
@@ -50,22 +56,24 @@ public class Conexion {
         InetSocketAddress addr = new InetSocketAddress("localhost", Integer.parseInt(puerto));
         serverSocket.bind(addr);
 
-        do { 
+        do {
+            if (conexiones < 1) {
+                System.out.println("ningún usuario conectado");
+            }
             if (conexiones < 3) {
-               
+
                 socket = serverSocket.accept();
                 System.out.println("Aceptando conexiones");
 
-                new Hilos(socket, is, os).start();
+                new Hilos(socket).start();
                 conexiones++;
-            }else {
+            } else {
                 try {
                     Thread.sleep(200); // el sleep es necesario para que funcionen las conexiones y desconexiones con el numero maximo 
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }
-            
+            }
 
         } while (true);
 
@@ -78,39 +86,55 @@ public class Conexion {
      * @throws IOException
      */
     public void recibir(InputStream is, OutputStream os) throws IOException {
-        
-        
+
         do {
+
             if (is.available() == 0) {
+
                 if (!resultado.equalsIgnoreCase(comprobacion)) {
                     enviar(os);
+                    System.out.println("enviado" + resultado);
+
+                    
+
                 }
-                comprobacion = resultado;
-                
+                containsConectado = resultado.contains(" ha iniciado sesion");
+                if (containsConectado == true) {
+                    resultado = "" + "#" + " hay " + conexiones + "#" + "usuarios conectados";
+                  
+                    containsConectado = false;
+                }
             } else {
 
-                byte[] mensajeCliente = new byte[1024];
+                byte[] mensajeCliente = new byte[2048];
                 is.read(mensajeCliente);
                 datos = new String(mensajeCliente);
                 resultado = datos;
-                contains = resultado.contains("se ha desconectado");
-                if (contains == true) {
+                enviar(os);
+                System.out.println(resultado + " recibido");
+
+                containsDesconectado = resultado.contains("se ha desconectado");
+                if (containsDesconectado == true) {
                     conexiones--; // si un cliente se ha desconectado se elimina una conexion de nuestra variable 
-                    System.out.println(conexiones);
+                    if (conexiones < 1) {
+                        System.out.println("ningún usuario conectado");
+                    }
+                   
                 }
 
             }
 
         } while (true);
-       
 
     }
 
     public void enviar(OutputStream os) throws IOException {
 
         os.write(resultado.getBytes());
-        System.out.println(resultado);
-        comprobacion = "[]";
+        comprobacion = resultado;
+        System.out.println(resultado + "enviado por el metodo enviar");
+
+        
     }
 
     /**
@@ -129,10 +153,8 @@ public class Conexion {
         private OutputStream os;
         private Socket nsocket;
 
-        public Hilos(Socket socket, InputStream ins, OutputStream ons) throws IOException {
+        public Hilos(Socket sockets) throws IOException {
             this.nsocket = socket;
-            this.is = ins;
-            this.os = ons;
 
         }
 

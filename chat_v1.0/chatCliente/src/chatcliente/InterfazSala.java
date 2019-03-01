@@ -171,13 +171,22 @@ public class InterfazSala extends javax.swing.JFrame {
 
     private void bEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEnviarActionPerformed
         // TODO add your handling code here:
+        if(chatCliente.getText().equalsIgnoreCase("/bye")){
+            conectarDesconectar();
+        }
+        else{
         conexion.enviar(chatCliente.getText());
         chatCliente.setText("");
+        }
     }//GEN-LAST:event_bEnviarActionPerformed
 
     private void bConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConexionActionPerformed
         // TODO add your handling code here:
-        if((!"".equals(textoIp.getText()))&&(textoPorto.getText()!="")){
+        conectarDesconectar();
+       
+    }//GEN-LAST:event_bConexionActionPerformed
+    private void conectarDesconectar(){
+         if((!"".equals(textoIp.getText()))&&(textoPorto.getText()!="")){
             
             try {
                 conexion.crearConexion(textoIp.getText(),Integer.parseInt(textoPorto.getText()),textoNick.getText());
@@ -207,8 +216,7 @@ public class InterfazSala extends javax.swing.JFrame {
                 dispose();
             }
         }
-    }//GEN-LAST:event_bConexionActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */
