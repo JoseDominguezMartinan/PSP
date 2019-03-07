@@ -59,7 +59,7 @@ public class Conexion {
       
            clienteSocket.connect(addr); 
       
-        
+        // enviamos a mensaxe conforme iniciamos sesion coa nosa direccion e o noso porto 
 
         enviar(nick + " ha iniciado sesion"+" "+clienteSocket.getInetAddress()+" "+clienteSocket.getLocalPort());
     }
@@ -79,13 +79,14 @@ public class Conexion {
             minutos = calendario.get(Calendar.MINUTE);
             segundos = calendario.get(Calendar.SECOND);
             
+            // enviamos o mensaje co  numero de usuarios conectados
             if(mensajeConectados==true){
                cadena="mensaje"+"#"+"false"+"#"+cadena;
                mensajeConectados=false;
-                System.out.println("asd");
+                
             }
             else{
-            
+            // en caso de que non sexa o primer mensaxe o mostramos da forma adecuada
             if (primerMensaje == false) {
                 cadena = nick + "#" + "false" + "#" + hora + ":" + minutos + ":" + segundos + ":  " + cadena + " " + "\n";
                 primerMensaje = true;
@@ -106,12 +107,16 @@ public class Conexion {
     public void recibir() throws IOException {
         //creamos un array de bytes para almacenar la información recibida
         byte[] mensajeCliente = new byte[2048];
-        is = clienteSocket.getInputStream();
-        is.read(mensajeCliente);
+        
+            is = clienteSocket.getInputStream();
+     
+           
+            is.read(mensajeCliente);
+        
         String datos = new String(mensajeCliente);
-        System.out.println(datos);
+        
         String[] cadena = datos.split("#");
-
+// se recibimos o mensaxe cos usuarios conectados o reenviamos da forma correcta e non o mostramos por pantalla
         try {
             
             if(cadena[0].equalsIgnoreCase("") && !compTexto.equalsIgnoreCase(datos)){
@@ -120,6 +125,7 @@ public class Conexion {
                 enviar(res);
                 compTexto=datos; 
            }
+            // en caso de mostralo por pantalla , o formateamos en html da forma desexada para mostrala no noso contedor 
             else{
             if (cadena[1].equalsIgnoreCase("false")) {
                 if (cadena[0].equalsIgnoreCase(nick)) {
@@ -132,6 +138,7 @@ public class Conexion {
                    + cadena[2] +
                     "</div><br>";
                 }
+                // precisamos un historial , se non engadese a etiqueta de fin de html ao final e non podemos engadir liñas 
                 historial += texto;
                 InterfazSala.chatSala.setText(historial);
             } else {
@@ -155,6 +162,7 @@ public class Conexion {
                 System.out.println("esperando a recibir mensaje");
         }
 
+    
     }
 
     /**

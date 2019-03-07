@@ -31,8 +31,8 @@ public class Conexion {
 
     String datos = "";
     String resultado = "";
-    String comprobacion = "@";
-    String resultado2 = "";
+    String comprobacion = "@"; // para realizar comprobacions e que o mesmo mensaxe non salga duas veces 
+    
 
     int conexiones = 0; // para controlar el numero de clientes con sesion iniciada en el servidor
 
@@ -57,9 +57,11 @@ public class Conexion {
         serverSocket.bind(addr);
 
         do {
+            // mostramos un mensaxe no servidor no caso de non ter clientes 
             if (conexiones < 1) {
                 System.out.println("ningún usuario conectado");
             }
+            // se as conexions son menos das permitidas
             if (conexiones < 3) {
 
                 socket = serverSocket.accept();
@@ -69,7 +71,8 @@ public class Conexion {
                 conexiones++;
             } else {
                 try {
-                    Thread.sleep(200); // el sleep es necesario para que funcionen las conexiones y desconexiones con el numero maximo 
+                    
+                    Thread.sleep(200); // el sleep es necesario para que funcionen las conexiones y desconexiones con el numero maximo
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -88,16 +91,15 @@ public class Conexion {
     public void recibir(InputStream is, OutputStream os) throws IOException {
 
         do {
-
+                // si hay mensaxes dispoñibles para enviar
             if (is.available() == 0) {
-
+                // no caso de que non haxan sido enviadas ainda enviamos 
                 if (!resultado.equalsIgnoreCase(comprobacion)) {
                     enviar(os);
                     System.out.println("enviado" + resultado);
 
-                    
-
                 }
+                   // si o mensaxe indica que alguen iniciou sesion , se mandan o numero de usuarios conectados
                 containsConectado = resultado.contains(" ha iniciado sesion");
                 if (containsConectado == true) {
                     resultado = "" + "#" + " hay " + conexiones + "#" + "usuarios conectados";
@@ -105,14 +107,14 @@ public class Conexion {
                     containsConectado = false;
                 }
             } else {
-
+                   // en caso contrario lemos para ter mensaxes que enviar 
                 byte[] mensajeCliente = new byte[2048];
                 is.read(mensajeCliente);
                 datos = new String(mensajeCliente);
                 resultado = datos;
                 enviar(os);
                 System.out.println(resultado + " recibido");
-
+                // se o mensaxe indica que un usuario desconectouse, restamolo na nosa variable 
                 containsDesconectado = resultado.contains("se ha desconectado");
                 if (containsDesconectado == true) {
                     conexiones--; // si un cliente se ha desconectado se elimina una conexion de nuestra variable 
@@ -127,6 +129,11 @@ public class Conexion {
         } while (true);
 
     }
+    /**
+     * metodo para enviar datos dende o servidor 
+     * @param os
+     * @throws IOException 
+     */
 
     public void enviar(OutputStream os) throws IOException {
 
@@ -146,7 +153,9 @@ public class Conexion {
         serverSocket.close();
 
     }
-
+/**
+ * clase que xestiona o fio que recibira en bucle os mensaxes dos clientes 
+ */
     public class Hilos extends Thread {
 
         private InputStream is;

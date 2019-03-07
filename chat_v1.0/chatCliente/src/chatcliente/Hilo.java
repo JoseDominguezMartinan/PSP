@@ -37,6 +37,7 @@ public class Hilo extends Thread {
               
 
             } catch (IOException ex) {
+                // se salta a excepcion finalizamos o bucle e mostramos a mensaxe de servidor desconectado 
                 i = false;
                 String texto = "<div align=center style=”padding:12px;margin-left:125px;margin-right:125px;background-color:#E0B86B;line-height:1.4;”>\n"
                     + 
