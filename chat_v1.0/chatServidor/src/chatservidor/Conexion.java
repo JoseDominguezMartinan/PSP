@@ -102,9 +102,10 @@ public class Conexion {
                    // si o mensaxe indica que alguen iniciou sesion , se mandan o numero de usuarios conectados
                 containsConectado = resultado.contains(" ha iniciado sesion");
                 if (containsConectado == true) {
-                    resultado = "" + "#" + " hay " + conexiones + "#" + "usuarios conectados";
-                  
+                   
+                    System.out.println("hay "+ conexiones + " usuarios conectados");
                     containsConectado = false;
+                    resultado="";
                 }
             } else {
                    // en caso contrario lemos para ter mensaxes que enviar 

@@ -142,9 +142,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="textoIp">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="localhost"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoIpActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelIp">
       <Properties>
@@ -152,9 +152,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textoPorto">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="6666"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelPorto">
       <Properties>
@@ -170,9 +167,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="textoNick">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Jose"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

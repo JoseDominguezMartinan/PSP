@@ -75,11 +75,13 @@ public class InterfazSala extends javax.swing.JFrame {
             }
         });
 
-        textoIp.setText("localhost");
+        textoIp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textoIpActionPerformed(evt);
+            }
+        });
 
         labelIp.setText("   IP");
-
-        textoPorto.setText("6666");
 
         labelPorto.setText("PORTO");
 
@@ -89,8 +91,6 @@ public class InterfazSala extends javax.swing.JFrame {
                 bConexionActionPerformed(evt);
             }
         });
-
-        textoNick.setText("Jose");
 
         jLabel1.setText("NICK");
 
@@ -185,6 +185,10 @@ public class InterfazSala extends javax.swing.JFrame {
         conectarDesconectar();
        
     }//GEN-LAST:event_bConexionActionPerformed
+
+    private void textoIpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoIpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textoIpActionPerformed
     private void conectarDesconectar(){
          if((!"".equals(textoIp.getText()))&&(textoPorto.getText()!="")){
             

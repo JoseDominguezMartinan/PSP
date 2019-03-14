@@ -30,7 +30,7 @@ public class Hilo extends Thread {
     public void run() {
         boolean i = true;
         while (i == true) {
-
+            //recibimos en bucle os mensaxes para que estemos recibindo sempre
             try {
                 
                 conexion.recibir();

@@ -30,14 +30,13 @@ public class Conexion {
     InputStream is;
     OutputStream os;
     Socket clienteSocket;
-    String nick;
+    String nick; // alamcenamos aqui o nome de usuario 
     String texto; // onde almacenaremos as mensaxes que seran xeradas para meter no chat 
     Calendar calendario; // para sacar la hora a la que se envio el mensaje por pantalla 
-    int hora, minutos, segundos;
+    int hora, minutos, segundos; // para almacenar e mostrar a hora da conexion e de envio dos mensaxes
     boolean primerMensaje = false; // si es el primer mensaje lo querremos formatear de una forma distinta 
-    boolean mensajeConectados=false; // para enviar el mensaje con el numero de usuario conectados a los demas correctamente 
     String historial = ""; // variable donde estara almacenada,en html , el historial de la conversacion
-    String compTexto="";
+    String compTexto=""; // variable usada para comprobar o texto e que todo funcione ben
     /**
      * metodo para conectar co servidor, enviandolle porto e ip correspondente,
      * e almacenando o nick
@@ -65,7 +64,7 @@ public class Conexion {
     }
 
     /**
-     *
+     *metodo para enviar as mensaxes
      * @param cadena
      */
     public void enviar(String cadena) {
@@ -73,19 +72,15 @@ public class Conexion {
         try {
 
             os = clienteSocket.getOutputStream();
+            
             // Recogemos la hora con los minutos a la que el mensaje fue enviado
             calendario = new GregorianCalendar();
             hora = calendario.get(Calendar.HOUR_OF_DAY);
             minutos = calendario.get(Calendar.MINUTE);
             segundos = calendario.get(Calendar.SECOND);
             
-            // enviamos o mensaje co  numero de usuarios conectados
-            if(mensajeConectados==true){
-               cadena="mensaje"+"#"+"false"+"#"+cadena;
-               mensajeConectados=false;
-                
-            }
-            else{
+           // se formatea o texto para a hora de que un cliente o mostre por pantalla o mostre como desexamos 
+          
             // en caso de que non sexa o primer mensaxe o mostramos da forma adecuada
             if (primerMensaje == false) {
                 cadena = nick + "#" + "false" + "#" + hora + ":" + minutos + ":" + segundos + ":  " + cadena + " " + "\n";
@@ -93,7 +88,7 @@ public class Conexion {
             } else {
                 cadena = nick + "#" + "true" + "#" + hora + ":" + minutos+":" + segundos + ":  " + cadena + " " + "\n";
             }
-            }
+            
             os.write(cadena.getBytes());
             System.out.println("enviado"+cadena);
             
@@ -110,7 +105,6 @@ public class Conexion {
         
             is = clienteSocket.getInputStream();
      
-           
             is.read(mensajeCliente);
         
         String datos = new String(mensajeCliente);
@@ -119,14 +113,10 @@ public class Conexion {
 // se recibimos o mensaxe cos usuarios conectados o reenviamos da forma correcta e non o mostramos por pantalla
         try {
             
-            if(cadena[0].equalsIgnoreCase("") && !compTexto.equalsIgnoreCase(datos)){
-                String res=cadena[1]+" "+cadena[2];
-                mensajeConectados=true;
-                enviar(res);
-                compTexto=datos; 
-           }
+            
             // en caso de mostralo por pantalla , o formateamos en html da forma desexada para mostrala no noso contedor 
-            else{
+            
+            // cadena[1] e false cando e un mensaxe dunha nova conexion, polo que o mostraremos no centro, o mensaxe cambia se o que se conectou e o propio cliente ou outro 
             if (cadena[1].equalsIgnoreCase("false")) {
                 if (cadena[0].equalsIgnoreCase(nick)) {
                     texto =  "<div align=center style=”padding:12px;margin-left:125px;margin-right:125px;background-color:#E0B86B;line-height:1.4;”>\n" 
@@ -141,7 +131,9 @@ public class Conexion {
                 // precisamos un historial , se non engadese a etiqueta de fin de html ao final e non podemos engadir liñas 
                 historial += texto;
                 InterfazSala.chatSala.setText(historial);
+                // en caso de que sea un mensaxe da conversacion 
             } else {
+                // se o mensaxe e do propio cliente, ( comparando o nick) mostrase na dereita e cun cor determinado 
                 if (cadena[0].equalsIgnoreCase(nick)) {
                    
                     String texto = "<div align=right style=”padding:12px;margin-left:250px;background-color:#B7E595;line-height:1.4;”>\n" 
@@ -149,6 +141,7 @@ public class Conexion {
                     "</div><br>";
                     historial += texto;
                     InterfazSala.chatSala.setText(historial);
+                    // en caso de que sea de outro cliente mostrase na esquerda e con outro cor
                 } else {
                     String texto = "<div align=left style=”padding:12px;margin-right:250px;background-color:#D1D8CC;line-height:1.4;”>\n" 
                     + cadena[0]+"<br>"+cadena[2] +
@@ -156,13 +149,12 @@ public class Conexion {
                     historial += texto;
                     InterfazSala.chatSala.setText(historial);
                 }
-            }
+            
             }
         } catch (ArrayIndexOutOfBoundsException error) {
                 System.out.println("esperando a recibir mensaje");
         }
 
-    
     }
 
     /**
@@ -171,7 +163,6 @@ public class Conexion {
      */
     public void cerrarConexions() throws IOException {
         clienteSocket.close();
-
     }
 
     /**
